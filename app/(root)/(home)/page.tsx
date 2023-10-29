@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
 import Link from "next/link";
 import QuestionCard from "@/components/cards/QuestionCard";
+import { getQuestions } from "@/lib/actions/question.action";
+import console from "console";
 
-const questions = [
+/* const questions = [
   {
     _id: "1",
     title: "Cascading Deletes in SQLAlchemy",
@@ -42,11 +44,15 @@ const questions = [
     answers: [],
     createdAt: new Date("2021-09-02T08:30:00.000Z"),
   },
-];
+]; */
 
 // Note that I've made changes to match the data types and structure of the QuestionProps interface.
 
-export default function Home() {
+export default async function Home() {
+  const result = await getQuestions({});
+
+  // console.log(result.questions);
+
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -75,8 +81,8 @@ export default function Home() {
 
       <div className="mt-10 flex w-full flex-col gap-6">
         {/* looping through questions */}
-        {questions.length > 0 ? (
-          questions.map((question) => (
+        {result.questions.length > 0 ? (
+          result.questions.map((question) => (
             <QuestionCard
               key={question._id}
               _id={question._id}
