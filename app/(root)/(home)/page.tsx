@@ -7,7 +7,6 @@ import { HomePageFilters } from "@/constants/filters";
 import Link from "next/link";
 import QuestionCard from "@/components/cards/QuestionCard";
 import { getQuestions } from "@/lib/actions/question.action";
-import console from "console";
 
 /* const questions = [
   {
