@@ -10,7 +10,6 @@ import { toggleSaveQuestion } from "@/lib/actions/user.action";
 import { formatAndDivideNumber } from "@/lib/utils";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import router from "next/router";
 import { useEffect } from "react";
 
 interface Props {
@@ -101,7 +100,7 @@ const Votes = ({
       userId: userId ? JSON.parse(userId) : undefined,
     });
 
-    alert("viewed");
+    // alert("viewed");
   }, [itemId, userId, pathname, router]);
 
   return (
