@@ -5,17 +5,19 @@ import { QuestionFilters } from "@/constants/filters";
 import QuestionCard from "@/components/cards/QuestionCard";
 import { getSavedQuestions } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs";
+import { SearchParamsProps } from "@/types";
 
-export default async function Home() {
+export default async function Home({ searchParams }: SearchParamsProps) {
   const { userId } = auth();
 
   if (!userId) return null;
 
   const result = await getSavedQuestions({
     clerkId: userId,
+    searchQuery: searchParams.q,
   });
 
-  console.log(result.questions);
+  // console.log(result.questions);
 
   return (
     <>
@@ -23,7 +25,7 @@ export default async function Home() {
 
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearchbar
-          route="/"
+          route={`/collection`}
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"
           placeholder="Search for questions"
@@ -38,7 +40,7 @@ export default async function Home() {
       <div className="mt-10 flex w-full flex-col gap-6">
         {/* looping through questions */}
         {result.questions.length > 0 ? (
-          result.questions.map((question) => (
+          result.questions.map((question: any) => (
             <QuestionCard
               key={question._id}
               _id={question._id}
@@ -52,7 +54,6 @@ export default async function Home() {
             />
           ))
         ) : (
-          // "No Results Found"}
           <NoResult
             title="There’s no question saved to show"
             description="Be the first to break the silence! aks a Question and kickstart the discussion. our query could be the next big thing others learn from. Get involved!"

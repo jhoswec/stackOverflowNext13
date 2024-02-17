@@ -7,6 +7,7 @@ import { HomePageFilters } from "@/constants/filters";
 import Link from "next/link";
 import QuestionCard from "@/components/cards/QuestionCard";
 import { getQuestions } from "@/lib/actions/question.action";
+import { SearchParamsProps } from "@/types";
 
 /* const questions = [
   {
@@ -47,10 +48,12 @@ import { getQuestions } from "@/lib/actions/question.action";
 
 // Note that I've made changes to match the data types and structure of the QuestionProps interface.
 
-export default async function Home() {
-  const result = await getQuestions({});
+export default async function Home({ searchParams }: SearchParamsProps) {
+  const result = await getQuestions({
+    searchQuery: searchParams.q,
+  });
 
-  console.log(result.questions);
+  // console.log(result.questions);
 
   return (
     <>
