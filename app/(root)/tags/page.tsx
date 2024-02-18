@@ -9,6 +9,7 @@ import Link from "next/link";
 const Tags = async ({ searchParams }: SearchParamsProps) => {
   const result = await getAlltags({
     searchQuery: searchParams.q,
+    filter: searchParams.filter,
   });
 
   return (
