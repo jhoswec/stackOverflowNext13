@@ -1,5 +1,4 @@
 import { type ClassValue, clsx } from "clsx";
-import { get } from "mongoose";
 import { twMerge } from "tailwind-merge";
 import qs from "query-string";
 import { BADGE_CRITERIA } from "@/constants";
@@ -69,7 +68,7 @@ export const getJoinedDate = (date: Date): string => {
 interface UrlQueryParams {
   params: string;
   key: string;
-  value: string;
+  value: any;
 }
 
 export const formUrlQuery = ({ params, key, value }: UrlQueryParams) => {

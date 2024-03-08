@@ -1,5 +1,6 @@
-import { AnswerFilters } from "@/constants/filters";
+import React from "react";
 import Filter from "./Filter";
+import { AnswerFilters } from "@/constants/filters";
 import { getAnswers } from "@/lib/actions/answer.action";
 import Link from "next/link";
 import Image from "next/image";
@@ -36,6 +37,7 @@ const AllAnswers = async ({
 
         <Filter filters={AnswerFilters} />
       </div>
+
       <div>
         {result.answers.map((answer) => (
           <article key={answer._id} className="light-border border-b py-10">
@@ -55,6 +57,7 @@ const AllAnswers = async ({
                   <p className="body-semibold text-dark300_light700">
                     {answer.author.name}
                   </p>
+
                   <p className="small-regular text-light400_light500 ml-0.5 mt-0.5 line-clamp-1">
                     answered {getTimestamp(answer.createdAt)}
                   </p>
@@ -77,8 +80,11 @@ const AllAnswers = async ({
         ))}
       </div>
 
-      <div className="mt-10">
-        <Pagination pageNumber={page ? +page : 1} isNext={result.isNext} />
+      <div className="mt-10 w-full">
+        <Pagination
+          pageNumber={page ? +page : 1}
+          isNext={result.isNextAnswer}
+        />
       </div>
     </div>
   );

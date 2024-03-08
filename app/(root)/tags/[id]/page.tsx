@@ -8,9 +8,8 @@ import { URLProps } from "@/types";
 const Page = async ({ params, searchParams }: URLProps) => {
   const result = await getQuestionsByTagId({
     tagId: params.id,
-    page: 1,
-    searchQuery: searchParams.q,
     page: searchParams.page ? +searchParams.page : 1,
+    searchQuery: searchParams.q,
   });
 
   return (
@@ -43,15 +42,15 @@ const Page = async ({ params, searchParams }: URLProps) => {
             />
           ))
         ) : (
-          // "No Results Found"}
           <NoResult
             title="There’s no tag question saved to show"
-            description="Be the first to break the silence! aks a Question and kickstart the discussion. our query could be the next big thing others learn from. Get involved!"
+            description="Be the first to break the silence! 🚀 Ask a Question and kickstart the discussion. our query could be the next big thing others learn from. Get involved! 💡"
             link="/ask-question"
             linkTitle="Ask a Question"
           />
         )}
       </div>
+
       <div className="mt-10">
         <Pagination
           pageNumber={searchParams?.page ? +searchParams.page : 1}

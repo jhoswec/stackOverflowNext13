@@ -10,10 +10,9 @@ import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
+import React from "react";
 
-const Page = async ({ params, searchParams }) => {
-  // console.log(searchParams);
-
+const Page = async ({ params, searchParams }: any) => {
   const { userId: clerkId } = auth();
 
   let mongoUser;
@@ -35,9 +34,9 @@ const Page = async ({ params, searchParams }) => {
             <Image
               src={result.author.picture}
               className="rounded-full"
-              alt="profile"
               width={22}
               height={22}
+              alt="profile"
             />
             <p className="paragraph-semibold text-dark300_light700">
               {result.author.name}
@@ -60,27 +59,28 @@ const Page = async ({ params, searchParams }) => {
           {result.title}
         </h2>
       </div>
+
       <div className="mb-8 mt-5 flex flex-wrap gap-4">
         <Metric
           imgUrl="/assets/icons/clock.svg"
           alt="clock icon"
-          value={`asked ${getTimestamp(result.createdAt)}`}
+          value={` asked ${getTimestamp(result.createdAt)}`}
           title=" Asked"
-          textStyles="small-medium text-dark400_ligth800"
+          textStyles="small-medium text-dark400_light800"
         />
         <Metric
           imgUrl="/assets/icons/message.svg"
-          alt="messages"
+          alt="message"
           value={formatAndDivideNumber(result.answers.length)}
           title=" Answers"
-          textStyles="small-medium text-dark400_ligth800"
+          textStyles="small-medium text-dark400_light800"
         />
         <Metric
           imgUrl="/assets/icons/eye.svg"
-          alt="Upvotes"
+          alt="eye"
           value={formatAndDivideNumber(result.views)}
           title=" Views"
-          textStyles="small-medium text-dark400_ligth800"
+          textStyles="small-medium text-dark400_light800"
         />
       </div>
 

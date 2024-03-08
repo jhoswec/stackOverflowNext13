@@ -21,6 +21,7 @@ export async function createAnswer(params: CreateAnswerParams) {
 
     const newAnswer = await Answer.create({ content, author, question });
 
+    // Add the answer to the question's answers array
     const questionObject = await Question.findByIdAndUpdate(question, {
       $push: { answers: newAnswer._id },
     });
@@ -65,6 +66,7 @@ export async function getAnswers(params: GetAnswersParams) {
       case "old":
         sortOptions = { createdAt: 1 };
         break;
+
       default:
         break;
     }
@@ -75,13 +77,16 @@ export async function getAnswers(params: GetAnswersParams) {
       .skip(skipAmount)
       .limit(pageSize);
 
-    const totalAnswer = await Answer.countDocuments({ question: questionId });
+    const totalAnswer = await Answer.countDocuments({
+      question: questionId,
+    });
 
-    const isNext = totalAnswer > skipAmount + answers.length;
+    const isNextAnswer = totalAnswer > skipAmount + answers.length;
 
-    return { answers, isNext };
+    return { answers, isNextAnswer };
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }
 
@@ -137,7 +142,7 @@ export async function downvoteAnswer(params: AnswerVoteParams) {
     let updateQuery = {};
 
     if (hasdownVoted) {
-      updateQuery = { $pull: { downvotes: userId } };
+      updateQuery = { $pull: { downvote: userId } };
     } else if (hasupVoted) {
       updateQuery = {
         $pull: { upvotes: userId },
@@ -186,10 +191,9 @@ export async function deleteAnswer(params: DeleteAnswerParams) {
     await answer.deleteOne({ _id: answerId });
     await Question.updateMany(
       { _id: answer.question },
-      { $pull: { answer: answerId } }
+      { $pull: { answers: answerId } }
     );
     await Interaction.deleteMany({ answer: answerId });
-    await Answer.deleteMany({ answer: answerId });
 
     revalidatePath(path);
   } catch (error) {
