@@ -11,6 +11,7 @@ import { formatAndDivideNumber } from "@/lib/utils";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { toast } from "../ui/use-toast";
 
 interface Props {
   type: string;
@@ -34,7 +35,7 @@ const Votes = ({
   hasSaved,
 }: Props) => {
   const pathname = usePathname();
-  const router = useRouter;
+  const router = useRouter();
 
   const handleSave = async () => {
     await toggleSaveQuestion({
@@ -42,11 +43,21 @@ const Votes = ({
       questionId: JSON.parse(itemId),
       path: pathname,
     });
+
+    return toast({
+      title: `Question ${
+        !hasSaved ? "Saved in" : "Removed from"
+      } your collection`,
+      variant: !hasSaved ? "default" : "destructive",
+    });
   };
 
   const handleVote = async (action: string) => {
     if (!userId) {
-      return;
+      return toast({
+        title: "Please log in",
+        description: "You must be logged in to perform this action",
+      });
     }
 
     if (action === "upvote") {
@@ -68,8 +79,10 @@ const Votes = ({
         });
       }
 
-      // todo: show a toast
-      return;
+      return toast({
+        title: `Upvote ${!hasupVoted ? "Successful" : "Removed"}`,
+        variant: !hasupVoted ? "default" : "destructive",
+      });
     }
 
     if (action === "downvote") {
@@ -90,7 +103,11 @@ const Votes = ({
           path: pathname,
         });
       }
-      // todo: show a toast
+
+      return toast({
+        title: `Downvote ${!hasupVoted ? "Successful" : "Removed"}`,
+        variant: !hasupVoted ? "default" : "destructive",
+      });
     }
   };
 
@@ -99,8 +116,6 @@ const Votes = ({
       questionId: JSON.parse(itemId),
       userId: userId ? JSON.parse(userId) : undefined,
     });
-
-    // alert("viewed");
   }, [itemId, userId, pathname, router]);
 
   return (
@@ -115,10 +130,11 @@ const Votes = ({
             }
             width={18}
             height={18}
-            alt="upvoted"
+            alt="upvote"
             className="cursor-pointer"
             onClick={() => handleVote("upvote")}
           />
+
           <div className="flex-center background-light700_dark400 min-w-[18px] rounded-sm p-1">
             <p className="subtle-medium text-dark400_light900">
               {formatAndDivideNumber(upvotes)}
@@ -135,10 +151,11 @@ const Votes = ({
             }
             width={18}
             height={18}
-            alt="downvoted"
+            alt="downvote"
             className="cursor-pointer"
             onClick={() => handleVote("downvote")}
           />
+
           <div className="flex-center background-light700_dark400 min-w-[18px] rounded-sm p-1">
             <p className="subtle-medium text-dark400_light900">
               {formatAndDivideNumber(downvotes)}
@@ -146,6 +163,7 @@ const Votes = ({
           </div>
         </div>
       </div>
+
       {type === "Question" && (
         <Image
           src={
